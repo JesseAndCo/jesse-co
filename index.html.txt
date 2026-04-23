@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jesse & Co</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0b1220;
+    color: white;
+}
+
+/* HEADER */
+header {
+    background: #111b2e;
+    padding: 18px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* NAV */
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    background: #0f1a30;
+}
+
+.nav button {
+    flex: 1;
+    min-width: 120px;
+    padding: 12px;
+    border: none;
+    background: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.nav button:hover {
+    background: #1c2b4a;
+}
+
+/* SECTIONS */
+.section {
+    display: none;
+    padding: 15px;
+    max-width: 900px;
+    margin: auto;
+}
+
+.active {
+    display: block;
+}
+
+/* CARDS */
+.card {
+    background: #16233d;
+    padding: 12px;
+    border-radius: 12px;
+    margin-top: 10px;
+}
+
+/* CASH APP */
+.cash {
+    text-align: center;
+    font-size: 18px;
+    padding: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>Jesse & Co</header>
+
+<!-- NAV -->
+<div class="nav">
+<button onclick="show('home')">Home</button>
+<button onclick="show('updates')">Updates</button>
+<button onclick="show('calendar')">Calendar</button>
+<button onclick="show('cash')">Cash App</button>
+</div>
+
+<!-- HOME -->
+<div id="home" class="section active">
+<div class="card">
+<h2>Welcome</h2>
+<p>This is Jesse & Co — official announcements, schedule, and info.</p>
+</div>
+</div>
+
+<!-- UPDATES (VIEW ONLY) -->
+<div id="updates" class="section">
+<div class="card">
+<h2>📢 Coming Through</h2>
+
+<div class="card">🚀 I’m coming through — stay ready</div>
+<div class="card">📢 New updates will be posted here</div>
+<div class="card">🔥 Official announcements only</div>
+
+</div>
+</div>
+
+<!-- CALENDAR (VIEW ONLY) -->
+<div id="calendar" class="section">
+<div class="card">
+<h2>📅 Calendar</h2>
+
+<div class="card">📌 Example Event: Friday Meet-up</div>
+<div class="card">📌 Example Event: Business Update Day</div>
+
+</div>
+</div>
+
+<!-- CASH APP -->
+<div id="cash" class="section">
+<div class="card">
+<h2>💸 Cash App</h2>
+<p class="cash">$Cocoabeans12</p>
+</div>
+</div>
+
+<script>
+function show(page) {
+    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+    document.getElementById(page).classList.add("active");
+}
+</script>
+
+</body>
+</html>
