@@ -2,38 +2,23 @@
 <html>
 <head>
   <title>Jesse & Co</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <style>
     body {
-      margin: 0;
       font-family: Arial;
-      background: #f2f2f2;
+      margin: 0;
+      background: #f5f5f5;
     }
 
     header {
-      background: black;
+      background: #111;
       color: white;
       padding: 15px;
       text-align: center;
       font-size: 20px;
-      position: relative;
-    }
-
-    .admin-btn {
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      background: white;
-      color: black;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 8px;
     }
 
     .tabs {
       display: flex;
-      overflow-x: auto;
       background: #ddd;
     }
 
@@ -51,24 +36,17 @@
     }
 
     .content {
-      padding: 15px;
-    }
-
-    .card {
-      background: white;
-      padding: 15px;
-      border-radius: 12px;
-      margin-bottom: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 20px;
     }
 
     button {
+      display: block;
       width: 100%;
-      padding: 12px;
-      margin-top: 10px;
+      padding: 15px;
+      margin: 10px 0;
+      font-size: 16px;
       border: none;
       border-radius: 10px;
-      font-size: 16px;
       background: black;
       color: white;
     }
@@ -76,72 +54,20 @@
     button.active {
       background: green;
     }
-
-    .admin-panel {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 100%;
-      height: 100%;
-      background: white;
-      display: none;
-      padding: 20px;
-      overflow: auto;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-    }
-
   </style>
 </head>
 
 <body>
 
-<header>
-  Jesse & Co
-  <button class="admin-btn" onclick="login()">Admin</button>
-</header>
+<header>Jesse & Co</header>
 
 <div class="tabs" id="tabs"></div>
 <div class="content" id="content"></div>
 
-<!-- ADMIN PANEL -->
-<div class="admin-panel" id="adminPanel">
-  <h2>Admin Panel</h2>
-
-  <input id="newJob" placeholder="New Job Name">
-  <button onclick="addJob()">Add Job</button>
-
-  <hr>
-
-  <div id="adminJobs"></div>
-
-  <button onclick="closeAdmin()">Close</button>
-</div>
+<script src="data.js"></script>
 
 <script>
-let PASSWORD = "082712";
-
-let siteData = JSON.parse(localStorage.getItem("siteData")) || {
-  jobs: [
-    {
-      name: "Example Job",
-      buttons: [
-        { text: "I'm coming", active: false },
-        { text: "Not coming", active: false }
-      ]
-    }
-  ]
-};
-
 let currentTab = 0;
-
-function saveData() {
-  localStorage.setItem("siteData", JSON.stringify(siteData));
-}
 
 function loadTabs() {
   let tabsDiv = document.getElementById("tabs");
@@ -169,9 +95,6 @@ function loadContent() {
   let job = siteData.jobs[currentTab];
 
   job.buttons.forEach(btn => {
-    let card = document.createElement("div");
-    card.className = "card";
-
     let button = document.createElement("button");
     button.innerText = btn.text;
 
@@ -179,69 +102,10 @@ function loadContent() {
 
     button.onclick = () => {
       btn.active = !btn.active;
-      saveData();
       loadContent();
     };
 
-    card.appendChild(button);
-    content.appendChild(card);
-  });
-}
-
-function login() {
-  let pass = prompt("Enter admin password:");
-  if (pass === PASSWORD) {
-    document.getElementById("adminPanel").style.display = "block";
-    loadAdmin();
-  } else {
-    alert("Wrong password");
-  }
-}
-
-function closeAdmin() {
-  document.getElementById("adminPanel").style.display = "none";
-}
-
-function addJob() {
-  let name = document.getElementById("newJob").value;
-
-  siteData.jobs.push({
-    name: name,
-    buttons: []
-  });
-
-  saveData();
-  loadTabs();
-  loadAdmin();
-}
-
-function addButton(jobIndex) {
-  let text = prompt("Button text:");
-
-  siteData.jobs[jobIndex].buttons.push({
-    text: text,
-    active: false
-  });
-
-  saveData();
-  loadAdmin();
-}
-
-function loadAdmin() {
-  let div = document.getElementById("adminJobs");
-  div.innerHTML = "";
-
-  siteData.jobs.forEach((job, index) => {
-    let section = document.createElement("div");
-
-    section.innerHTML = "<h3>" + job.name + "</h3>";
-
-    let btn = document.createElement("button");
-    btn.innerText = "Add Button";
-    btn.onclick = () => addButton(index);
-
-    section.appendChild(btn);
-    div.appendChild(section);
+    content.appendChild(button);
   });
 }
 
