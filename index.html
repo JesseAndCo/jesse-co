@@ -20,7 +20,6 @@ header {
     font-weight: bold;
 }
 
-/* TABS */
 .tabs {
     display: flex;
     background: #111827;
@@ -35,10 +34,6 @@ header {
     font-weight: bold;
 }
 
-.tabs button:hover {
-    background: #1f2937;
-}
-
 .tab {
     display: none;
     padding: 20px;
@@ -48,7 +43,6 @@ header {
     display: block;
 }
 
-/* CARDS */
 .card {
     background: #111827;
     padding: 15px;
@@ -57,7 +51,7 @@ header {
     border: 1px solid #222;
 }
 
-/* JOB BOX */
+/* JOBS */
 .job {
     background: #0f172a;
     padding: 12px;
@@ -66,20 +60,17 @@ header {
     border: 1px solid #222;
 }
 
-/* BUTTONS */
-button.action {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 8px;
+/* CASH APP */
+.cashapp {
+    background: linear-gradient(90deg, #00f5ff, #22c55e);
+    padding: 15px;
+    border-radius: 10px;
+    color: black;
     font-weight: bold;
-    cursor: pointer;
+    text-align: center;
 }
 
-.green { background: #00f5ff; color: black; }
-.red { background: #ff4d6d; color: white; }
-
+/* INPUTS */
 input, textarea {
     width: 100%;
     padding: 10px;
@@ -90,15 +81,18 @@ input, textarea {
     color: white;
 }
 
-/* CASH */
-.cashapp {
-    background: linear-gradient(90deg, #00f5ff, #22c55e);
-    padding: 15px;
-    border-radius: 10px;
-    color: black;
+/* BUTTONS */
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
     font-weight: bold;
-    text-align: center;
 }
+
+.green { background: #00f5ff; }
+.red { background: #ff4d6d; }
 
 /* ADMIN */
 #adminPanel {
@@ -134,15 +128,15 @@ input, textarea {
 <!-- JOBS -->
 <div id="jobs" class="tab">
     <div class="card">
-        <h3>Available Jobs</h3>
+        <h3>Jobs</h3>
         <div id="jobList"></div>
     </div>
 </div>
 
-<!-- CASH -->
+<!-- CASH APP -->
 <div id="cash" class="tab">
     <div class="cashapp">
-        Cash App: $Cocoabeans12
+        Cash App: <span id="cashText">$Cocoabeans12</span>
     </div>
 </div>
 
@@ -151,7 +145,7 @@ input, textarea {
     <div class="card">
         <h3>Admin Login</h3>
         <input type="password" id="pass" placeholder="Password">
-        <button class="action green" onclick="login()">Login</button>
+        <button class="green" onclick="login()">Login</button>
     </div>
 
     <div id="adminPanel">
@@ -159,19 +153,18 @@ input, textarea {
         <h3>Admin Controls</h3>
 
         <!-- STATUS -->
-        <button class="action green" onclick="setStatus('Coming through')">Coming through</button>
-        <button class="action red" onclick="setStatus('Not coming through')">Not coming through</button>
+        <button class="green" onclick="setStatus('Coming through')">Coming through</button>
+        <button class="red" onclick="setStatus('Not coming through')">Not coming through</button>
 
         <input id="customStatus" placeholder="Custom status">
-        <button class="action green" onclick="updateStatus()">Update Status</button>
+        <button class="green" onclick="updateStatus()">Update Status</button>
 
-        <!-- JOBS -->
-        <h3>Add Job</h3>
-        <input id="jobTitle" placeholder="Job title">
-        <textarea id="jobDesc" placeholder="Job description"></textarea>
-        <button class="action green" onclick="addJob()">Add Job</button>
+        <!-- CASH APP EDIT -->
+        <h3>Cash App Edit</h3>
+        <input id="cashInput" placeholder="Enter new Cash App">
+        <button class="green" onclick="updateCash()">Update Cash App</button>
 
-        <button class="action red" onclick="logout()">Logout</button>
+        <button class="red" onclick="logout()">Logout</button>
     </div>
 </div>
 
@@ -179,57 +172,58 @@ input, textarea {
 let jobs = [];
 
 function openTab(tab){
-    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-    document.getElementById(tab).classList.add("active");
+document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+document.getElementById(tab).classList.add("active");
 }
 
 /* STATUS */
 function setStatus(text){
-    document.getElementById("statusText").innerText = text;
+document.getElementById("statusText").innerText = text;
 }
 
 function updateStatus(){
-    document.getElementById("statusText").innerText =
-    document.getElementById("customStatus").value;
+document.getElementById("statusText").innerText =
+document.getElementById("customStatus").value;
+}
+
+/* CASH APP EDIT */
+function updateCash(){
+let val = document.getElementById("cashInput").value;
+if(!val) return;
+
+document.getElementById("cashText").innerText = val;
 }
 
 /* JOBS */
 function addJob(){
-    let title = document.getElementById("jobTitle").value;
-    let desc = document.getElementById("jobDesc").value;
+let title = document.getElementById("jobTitle").value;
+let desc = document.getElementById("jobDesc").value;
 
-    if(!title || !desc) return;
-
-    jobs.push({title, desc});
-    renderJobs();
-
-    document.getElementById("jobTitle").value="";
-    document.getElementById("jobDesc").value="";
+jobs.push({title,desc});
+renderJobs();
 }
 
 function renderJobs(){
-    let box = document.getElementById("jobList");
-    box.innerHTML = "";
+let box = document.getElementById("jobList");
+box.innerHTML = "";
 
-    jobs.forEach(j=>{
-        let div = document.createElement("div");
-        div.className="job";
-        div.innerHTML = "<b>"+j.title+"</b><br>"+j.desc;
-        box.appendChild(div);
-    });
+jobs.forEach(j=>{
+let d = document.createElement("div");
+d.className="job";
+d.innerHTML="<b>"+j.title+"</b><br>"+j.desc;
+box.appendChild(d);
+});
 }
 
 /* ADMIN */
 function login(){
-    if(document.getElementById("pass").value==="0827"){
-        document.getElementById("adminPanel").style.display="block";
-    } else {
-        alert("Wrong password");
-    }
+if(document.getElementById("pass").value==="0827"){
+document.getElementById("adminPanel").style.display="block";
+}
 }
 
 function logout(){
-    document.getElementById("adminPanel").style.display="none";
+document.getElementById("adminPanel").style.display="none";
 }
 </script>
 
