@@ -1,110 +1,114 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jesse & Co</title>
 
 <style>
-    body {
-        margin: 0;
-        font-family: Arial;
-        background: #0b0f1a;
-        color: white;
-    }
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #0b0f1a;
+    color: white;
+}
 
-    header {
-        background: linear-gradient(90deg, #00f5ff, #7c3aed);
-        padding: 18px;
-        text-align: center;
-        font-size: 22px;
-        font-weight: bold;
-    }
+header {
+    background: linear-gradient(90deg, #00f5ff, #7c3aed);
+    padding: 16px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+}
 
-    .tabs {
-        display: flex;
-        background: #111827;
-    }
+/* TABS */
+.tabs {
+    display: flex;
+    background: #111827;
+}
 
-    .tabs button {
-        flex: 1;
-        padding: 12px;
-        background: none;
-        border: none;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-    }
+.tabs button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: none;
+    color: white;
+    font-weight: bold;
+}
 
-    .tabs button:hover {
-        background: #1f2937;
-    }
+.tabs button:hover {
+    background: #1f2937;
+}
 
-    .tab {
-        display: none;
-        padding: 20px;
-    }
+.tab {
+    display: none;
+    padding: 20px;
+}
 
-    .active {
-        display: block;
-    }
+.active {
+    display: block;
+}
 
-    .card {
-        background: #111827;
-        padding: 15px;
-        border-radius: 10px;
-        margin-top: 10px;
-        border: 1px solid #222;
-    }
+/* CARDS */
+.card {
+    background: #111827;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+    border: 1px solid #222;
+}
 
-    button {
-        padding: 10px;
-        width: 100%;
-        margin-top: 10px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-    }
+/* JOB BOX */
+.job {
+    background: #0f172a;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 1px solid #222;
+}
 
-    .green { background: #00f5ff; color: black; }
-    .red { background: #ff4d6d; color: white; }
+/* BUTTONS */
+button.action {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-    input {
-        width: 100%;
-        padding: 10px;
-        margin-top: 10px;
-        border-radius: 6px;
-        border: none;
-        background: #1f2937;
-        color: white;
-    }
+.green { background: #00f5ff; color: black; }
+.red { background: #ff4d6d; color: white; }
 
-    /* CHAT BOX */
-    #chatBox {
-        height: 250px;
-        overflow-y: auto;
-        background: #0f172a;
-        border: 1px solid #222;
-        padding: 10px;
-        border-radius: 8px;
-    }
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 6px;
+    border: none;
+    background: #1f2937;
+    color: white;
+}
 
-    .msg {
-        margin: 5px 0;
-        padding: 6px;
-        background: #1f2937;
-        border-radius: 6px;
-    }
+/* CASH */
+.cashapp {
+    background: linear-gradient(90deg, #00f5ff, #22c55e);
+    padding: 15px;
+    border-radius: 10px;
+    color: black;
+    font-weight: bold;
+    text-align: center;
+}
 
-    #adminPanel {
-        display: none;
-        margin-top: 10px;
-        padding: 15px;
-        background: #0f172a;
-        border-radius: 10px;
-        border: 1px solid #222;
-    }
+/* ADMIN */
+#adminPanel {
+    display: none;
+    margin-top: 10px;
+    padding: 15px;
+    background: #0f172a;
+    border-radius: 10px;
+    border: 1px solid #222;
+}
 </style>
 </head>
 
@@ -114,7 +118,7 @@
 
 <div class="tabs">
     <button onclick="openTab('home')">Home</button>
-    <button onclick="openTab('chat')">Chat</button>
+    <button onclick="openTab('jobs')">Jobs</button>
     <button onclick="openTab('cash')">Cash App</button>
     <button onclick="openTab('admin')">Admin</button>
 </div>
@@ -127,23 +131,18 @@
     </div>
 </div>
 
-<!-- CHAT -->
-<div id="chat" class="tab">
+<!-- JOBS -->
+<div id="jobs" class="tab">
     <div class="card">
-        <h3>Chat</h3>
-
-        <div id="chatBox"></div>
-
-        <input id="msgInput" placeholder="Type message...">
-        <button class="green" onclick="sendMsg()">Send</button>
+        <h3>Available Jobs</h3>
+        <div id="jobList"></div>
     </div>
 </div>
 
-<!-- CASH APP -->
+<!-- CASH -->
 <div id="cash" class="tab">
-    <div class="card">
-        <h3>Cash App</h3>
-        <p id="cashText">$Cocoabeans12</p>
+    <div class="cashapp">
+        Cash App: $Cocoabeans12
     </div>
 </div>
 
@@ -152,81 +151,85 @@
     <div class="card">
         <h3>Admin Login</h3>
         <input type="password" id="pass" placeholder="Password">
-        <button class="green" onclick="login()">Login</button>
+        <button class="action green" onclick="login()">Login</button>
     </div>
 
     <div id="adminPanel">
 
         <h3>Admin Controls</h3>
 
-        <p>Status Control</p>
-        <button class="green" onclick="setStatus(true)">Coming through</button>
-        <button class="red" onclick="setStatus(false)">Not coming through</button>
+        <!-- STATUS -->
+        <button class="action green" onclick="setStatus('Coming through')">Coming through</button>
+        <button class="action red" onclick="setStatus('Not coming through')">Not coming through</button>
 
-        <p>Edit Cash App</p>
-        <input id="cashInput" placeholder="Change Cash App">
-        <button class="green" onclick="updateCash()">Update</button>
+        <input id="customStatus" placeholder="Custom status">
+        <button class="action green" onclick="updateStatus()">Update Status</button>
 
-        <p>Clear Chat</p>
-        <button class="red" onclick="clearChat()">Clear Messages</button>
+        <!-- JOBS -->
+        <h3>Add Job</h3>
+        <input id="jobTitle" placeholder="Job title">
+        <textarea id="jobDesc" placeholder="Job description"></textarea>
+        <button class="action green" onclick="addJob()">Add Job</button>
 
-        <button class="red" onclick="logout()">Logout</button>
+        <button class="action red" onclick="logout()">Logout</button>
     </div>
 </div>
 
 <script>
+let jobs = [];
+
 function openTab(tab){
     document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
     document.getElementById(tab).classList.add("active");
 }
 
 /* STATUS */
-function setStatus(state){
+function setStatus(text){
+    document.getElementById("statusText").innerText = text;
+}
+
+function updateStatus(){
     document.getElementById("statusText").innerText =
-        state ? "Coming through" : "Not coming through";
+    document.getElementById("customStatus").value;
 }
 
-/* CASH APP */
-function updateCash(){
-    let val = document.getElementById("cashInput").value;
-    document.getElementById("cashText").innerText = val;
+/* JOBS */
+function addJob(){
+    let title = document.getElementById("jobTitle").value;
+    let desc = document.getElementById("jobDesc").value;
+
+    if(!title || !desc) return;
+
+    jobs.push({title, desc});
+    renderJobs();
+
+    document.getElementById("jobTitle").value="";
+    document.getElementById("jobDesc").value="";
 }
 
-/* LOGIN */
+function renderJobs(){
+    let box = document.getElementById("jobList");
+    box.innerHTML = "";
+
+    jobs.forEach(j=>{
+        let div = document.createElement("div");
+        div.className="job";
+        div.innerHTML = "<b>"+j.title+"</b><br>"+j.desc;
+        box.appendChild(div);
+    });
+}
+
+/* ADMIN */
 function login(){
-    let p = document.getElementById("pass").value;
-    if(p === "0827"){
-        document.getElementById("adminPanel").style.display = "block";
-        alert("Admin unlocked");
+    if(document.getElementById("pass").value==="0827"){
+        document.getElementById("adminPanel").style.display="block";
     } else {
         alert("Wrong password");
     }
 }
 
 function logout(){
-    document.getElementById("adminPanel").style.display = "none";
-}
-
-/* CHAT (simple local version) */
-function sendMsg(){
-    let input = document.getElementById("msgInput");
-    let text = input.value;
-    if(!text) return;
-
-    let box = document.getElementById("chatBox");
-
-    let div = document.createElement("div");
-    div.className = "msg";
-    div.innerText = text;
-
-    box.appendChild(div);
-    input.value = "";
-
-    box.scrollTop = box.scrollHeight;
-}
-
-function clearChat(){
-    document.getElementById("chatBox").innerHTML = "";
+    document.getElementById("adminPanel").style.display="none";
 }
 </script>
 
