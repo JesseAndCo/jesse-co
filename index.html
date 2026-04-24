@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +13,7 @@ body {
     color: white;
 }
 
+/* HEADER */
 header {
     background: linear-gradient(90deg, #00f5ff, #7c3aed);
     padding: 16px;
@@ -20,6 +22,7 @@ header {
     font-weight: bold;
 }
 
+/* TABS */
 .tabs {
     display: flex;
     background: #111827;
@@ -34,6 +37,11 @@ header {
     font-weight: bold;
 }
 
+.tabs button:hover {
+    background: #1f2937;
+}
+
+/* PAGES */
 .tab {
     display: none;
     padding: 20px;
@@ -43,6 +51,7 @@ header {
     display: block;
 }
 
+/* CARDS */
 .card {
     background: #111827;
     padding: 15px;
@@ -51,6 +60,16 @@ header {
     border: 1px solid #222;
 }
 
+/* JOBS */
+.job {
+    background: #0f172a;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 1px solid #222;
+}
+
+/* CASH */
 .cashapp {
     background: linear-gradient(90deg, #00f5ff, #22c55e);
     padding: 15px;
@@ -60,14 +79,7 @@ header {
     text-align: center;
 }
 
-.job {
-    background: #0f172a;
-    padding: 12px;
-    margin-top: 10px;
-    border-radius: 8px;
-    border: 1px solid #222;
-}
-
+/* INPUTS */
 input, textarea {
     width: 100%;
     padding: 10px;
@@ -78,6 +90,7 @@ input, textarea {
     color: white;
 }
 
+/* BUTTONS */
 button {
     width: 100%;
     padding: 10px;
@@ -85,18 +98,27 @@ button {
     border: none;
     border-radius: 8px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .green { background: #00f5ff; }
 .red { background: #ff4d6d; }
 
+/* ADMIN */
 #adminPanel {
     display: none;
     margin-top: 10px;
-    padding: 15px;
-    background: #0f172a;
-    border-radius: 10px;
-    border: 1px solid #222;
+}
+
+/* CLEAN ADMIN BOXES */
+.adminBox h3 {
+    margin: 0;
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+
+.adminBox {
+    margin-bottom: 12px;
 }
 </style>
 </head>
@@ -116,7 +138,7 @@ button {
 <div id="home" class="tab active">
     <div class="card">
         <h3>Status</h3>
-        <p id="statusText"></p>
+        <p id="statusText">Not coming through</p>
     </div>
 </div>
 
@@ -128,15 +150,16 @@ button {
     </div>
 </div>
 
-<!-- CASH APP -->
+<!-- CASH -->
 <div id="cash" class="tab">
     <div class="cashapp">
-        Cash App: <span id="cashText"></span>
+        Cash App: <span id="cashText">$Cocoabeans12</span>
     </div>
 </div>
 
 <!-- ADMIN -->
 <div id="admin" class="tab">
+
     <div class="card">
         <h3>Admin Login</h3>
         <input type="password" id="pass" placeholder="Password">
@@ -145,24 +168,33 @@ button {
 
     <div id="adminPanel">
 
-        <h3>Admin Controls</h3>
+        <div class="card adminBox">
+            <h3>⚙️ Status Control</h3>
+            <button class="green" onclick="setStatus('Coming through')">Coming through</button>
+            <button class="red" onclick="setStatus('Not coming through')">Not coming through</button>
 
-        <button class="green" onclick="setStatus('Coming through')">Coming through</button>
-        <button class="red" onclick="setStatus('Not coming through')">Not coming through</button>
+            <input id="customStatus" placeholder="Custom status">
+            <button class="green" onclick="updateStatus()">Save Status</button>
+        </div>
 
-        <input id="customStatus" placeholder="Custom status">
-        <button class="green" onclick="updateStatus()">Update Status</button>
+        <div class="card adminBox">
+            <h3>💳 Cash App</h3>
+            <input id="cashInput" placeholder="Edit Cash App">
+            <button class="green" onclick="updateCash()">Save Cash App</button>
+        </div>
 
-        <h3>Cash App Edit</h3>
-        <input id="cashInput" placeholder="Change Cash App">
-        <button class="green" onclick="updateCash()">Save Cash App</button>
+        <div class="card adminBox">
+            <h3>💼 Jobs</h3>
+            <input id="jobTitle" placeholder="Job title">
+            <input id="jobDesc" placeholder="Job description">
+            <button class="green" onclick="addJob()">Add Job</button>
+        </div>
 
-        <h3>Add Job</h3>
-        <input id="jobTitle" placeholder="Job title">
-        <textarea id="jobDesc" placeholder="Job description"></textarea>
-        <button class="green" onclick="addJob()">Add Job</button>
+        <div class="card adminBox">
+            <h3>🔐 Logout</h3>
+            <button class="red" onclick="logout()">Logout Admin</button>
+        </div>
 
-        <button class="red" onclick="logout()">Logout</button>
     </div>
 </div>
 
@@ -177,15 +209,13 @@ localStorage.getItem("status") || "Not coming through";
 document.getElementById("cashText").innerText =
 localStorage.getItem("cash") || "$Cocoabeans12";
 
-renderJobs();
-
 /* NAV */
 function openTab(tab){
 document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
 document.getElementById(tab).classList.add("active");
 }
 
-/* STATUS (SAVE) */
+/* STATUS */
 function setStatus(val){
 document.getElementById("statusText").innerText = val;
 localStorage.setItem("status", val);
@@ -197,7 +227,7 @@ document.getElementById("statusText").innerText = val;
 localStorage.setItem("status", val);
 }
 
-/* CASH APP (SAVE) */
+/* CASH APP */
 function updateCash(){
 let val = document.getElementById("cashInput").value;
 if(!val) return;
@@ -206,7 +236,7 @@ document.getElementById("cashText").innerText = val;
 localStorage.setItem("cash", val);
 }
 
-/* JOBS (SAVE) */
+/* JOBS */
 function addJob(){
 let title = document.getElementById("jobTitle").value;
 let desc = document.getElementById("jobDesc").value;
@@ -233,6 +263,8 @@ d.innerHTML="<b>"+j.title+"</b><br>"+j.desc;
 box.appendChild(d);
 });
 }
+
+renderJobs();
 
 /* ADMIN */
 function login(){
