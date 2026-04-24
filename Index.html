@@ -1,116 +1,229 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Jesse & Co</title>
-  <style>
-    body {
-      font-family: Arial;
-      margin: 0;
-      background: #f5f5f5;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jesse & Co</title>
 
-    header {
-      background: #111;
-      color: white;
-      padding: 15px;
-      text-align: center;
-      font-size: 20px;
-    }
+<style>
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #fafafa;
+}
 
-    .tabs {
-      display: flex;
-      background: #ddd;
-    }
+/* BANNER (KEEPING YOUR STYLE BUT CLEANER) */
+.banner {
+    background: url('https://picsum.photos/800/300') center/cover;
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
 
-    .tab {
-      flex: 1;
-      padding: 12px;
-      text-align: center;
-      cursor: pointer;
-      background: #ccc;
-    }
+/* NAV */
+.nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 10px;
+    background: white;
+    border-bottom: 1px solid #ddd;
+}
 
-    .tab.active {
-      background: white;
-      font-weight: bold;
-    }
+.nav button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
 
-    .content {
-      padding: 20px;
-    }
+.nav button:hover {
+    background: #eee;
+}
 
-    button {
-      display: block;
-      width: 100%;
-      padding: 15px;
-      margin: 10px 0;
-      font-size: 16px;
-      border: none;
-      border-radius: 10px;
-      background: black;
-      color: white;
-    }
+/* TABS */
+.tab {
+    display: none;
+    padding: 20px;
+}
 
-    button.active {
-      background: green;
-    }
-  </style>
+.active {
+    display: block;
+}
+
+/* BUTTON */
+.main-btn {
+    background: black;
+    color: white;
+    padding: 14px;
+    border: none;
+    width: 100%;
+    border-radius: 12px;
+    font-size: 16px;
+    margin-top: 15px;
+    transition: 0.2s;
+}
+
+.main-btn:hover {
+    opacity: 0.8;
+}
+
+/* PRODUCTS */
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.product {
+    background: white;
+    padding: 12px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* ADMIN PANEL */
+.admin {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    border-top: 2px solid black;
+    padding: 15px;
+    display: none;
+}
+
+/* INPUT */
+input {
+    padding: 10px;
+    margin: 5px 0;
+    width: 100%;
+}
+</style>
 </head>
 
 <body>
 
-<header>Jesse & Co</header>
+<!-- BANNER -->
+<div class="banner">
+    Jesse & Co
+    <div style="font-size:14px;">Simple. Clean. Yours.</div>
+</div>
 
-<div class="tabs" id="tabs"></div>
-<div class="content" id="content"></div>
+<!-- NAV -->
+<div class="nav">
+    <button onclick="showTab('home')">Home</button>
+    <button onclick="showTab('shop')">Shop</button>
+    <button onclick="showTab('chat')">Chat</button>
+    <button onclick="toggleAdmin()">⚙️</button>
+</div>
 
-<script src="data.js"></script>
+<!-- HOME -->
+<div id="home" class="tab active">
+    <h2>Welcome</h2>
+
+    <button class="main-btn" onclick="toggleStatus()" id="statusBtn">
+        I'm coming through 🚗
+    </button>
+
+    <p id="statusText">Status: Not coming</p>
+</div>
+
+<!-- SHOP -->
+<div id="shop" class="tab">
+    <h2>Shop</h2>
+
+    <div class="products" id="productList">
+        <div class="product">Ring - $20</div>
+        <div class="product">Chain - $30</div>
+    </div>
+</div>
+
+<!-- CHAT -->
+<div id="chat" class="tab">
+    <h2>Chat</h2>
+
+    <div id="messages" style="height:150px; overflow:auto; background:white; padding:10px;"></div>
+
+    <input id="msgInput" placeholder="Message...">
+    <button class="main-btn" onclick="sendMsg()">Send</button>
+</div>
+
+<!-- ADMIN -->
+<div class="admin" id="adminPanel">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+
+    <div id="adminContent" style="display:none;">
+        <h3>Add Product</h3>
+        <input id="name" placeholder="Name">
+        <input id="price" placeholder="Price">
+        <button onclick="addProduct()">Add</button>
+
+        <button onclick="toggleAdmin()" style="margin-top:10px;">Close</button>
+    </div>
+</div>
 
 <script>
-let currentTab = 0;
-
-function loadTabs() {
-  let tabsDiv = document.getElementById("tabs");
-  tabsDiv.innerHTML = "";
-
-  siteData.jobs.forEach((job, index) => {
-    let tab = document.createElement("div");
-    tab.className = "tab" + (index === currentTab ? " active" : "");
-    tab.innerText = job.name;
-
-    tab.onclick = () => {
-      currentTab = index;
-      loadTabs();
-      loadContent();
-    };
-
-    tabsDiv.appendChild(tab);
-  });
+function showTab(tab) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(tab).classList.add('active');
 }
 
-function loadContent() {
-  let content = document.getElementById("content");
-  content.innerHTML = "";
+/* STATUS BUTTON */
+let coming = false;
 
-  let job = siteData.jobs[currentTab];
+function toggleStatus() {
+    coming = !coming;
 
-  job.buttons.forEach(btn => {
-    let button = document.createElement("button");
-    button.innerText = btn.text;
+    document.getElementById("statusText").innerText =
+        coming ? "Status: Coming Through" : "Status: Not coming";
 
-    if (btn.active) button.classList.add("active");
-
-    button.onclick = () => {
-      btn.active = !btn.active;
-      loadContent();
-    };
-
-    content.appendChild(button);
-  });
+    document.getElementById("statusBtn").innerText =
+        coming ? "Cancel ❌" : "I'm coming through 🚗";
 }
 
-loadTabs();
-loadContent();
+/* CHAT */
+function sendMsg() {
+    let input = document.getElementById("msgInput");
+    if(!input.value) return;
+
+    document.getElementById("messages").innerHTML +=
+        "<div>You: " + input.value + "</div>";
+
+    input.value = "";
+}
+
+/* ADMIN */
+function toggleAdmin() {
+    let panel = document.getElementById("adminPanel");
+    panel.style.display = panel.style.display === "block" ? "none" : "block";
+}
+
+function login() {
+    if(document.getElementById("password").value === "082712") {
+        document.getElementById("adminContent").style.display = "block";
+    } else {
+        alert("Wrong password");
+    }
+}
+
+function addProduct() {
+    let name = document.getElementById("name").value;
+    let price = document.getElementById("price").value;
+
+    let div = document.createElement("div");
+    div.className = "product";
+    div.innerText = `${name} - $${price}`;
+
+    document.getElementById("productList").appendChild(div);
+}
 </script>
 
 </body>
