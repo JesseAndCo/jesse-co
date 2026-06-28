@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jesse & Co</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #05050c;
+  color: white;
+}
+
+/* TOP BAR */
+header {
+  padding: 70px 20px;
+  text-align: center;
+  background: linear-gradient(135deg, #00f5ff, #8a2be2);
+  box-shadow: 0 0 25px #8a2be2;
+}
+
+header h1 {
+  font-size: 3rem;
+  margin: 0;
+}
+
+header p {
+  opacity: 0.9;
+}
+
+/* NAV */
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  background: #0e0e1a;
+  padding: 15px;
+  position: sticky;
+  top: 0;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+
+nav a:hover {
+  background: #00f5ff;
+  color: black;
+}
+
+/* SECTIONS */
+section {
+  max-width: 800px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+.card {
+  background: #141427;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 12px rgba(0,255,255,0.15);
+}
+
+/* BUTTON */
+button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #00f5ff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #8a2be2;
+  color: white;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 30px;
+  opacity: 0.6;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Jesse & Co</h1>
+  <p>Projects • Updates • Hub</p>
+</header>
+
+<nav>
+  <a href="#home">Home</a>
+  <a href="#updates">Updates</a>
+  <a href="#toggle">Status</a>
+</nav>
+
+<section id="home">
+  <div class="card">
+    <h2>Welcome 👋</h2>
+    <p>This is your official Jesse & Co hub site.</p>
+  </div>
+</section>
+
+<section id="updates">
+  <div class="card">
+    <h2>Updates</h2>
+    <p>Add your Roblox, YouTube, or projects here later.</p>
+  </div>
+</section>
+
+<section id="toggle">
+  <div class="card">
+    <h2>“I’m Coming Through” Status</h2>
+    <p id="status">Status: OFF</p>
+    <button onclick="toggle()">Toggle</button>
+  </div>
+</section>
+
+<footer>
+  © 2026 Jesse & Co
+</footer>
+
+<script>
+let on = false;
+
+function toggle() {
+  on = !on;
+  document.getElementById("status").innerText =
+    "Status: " + (on ? "ON 🔥" : "OFF");
+}
+</script>
+
+</body>
+</html>
