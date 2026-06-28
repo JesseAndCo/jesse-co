@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jesse & Co</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b0b12;
+      color: #fff;
+      text-align: center;
+    }
+
+    header {
+      padding: 60px 20px;
+      background: linear-gradient(135deg, #00f5ff, #7a00ff);
+      box-shadow: 0 0 20px #7a00ff;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      margin: 0;
+      text-shadow: 0 0 10px #000;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+
+    .container {
+      padding: 40px 20px;
+    }
+
+    .card {
+      background: #151525;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 600px;
+      box-shadow: 0 0 15px rgba(0,255,255,0.2);
+    }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #00f5ff;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #7a00ff;
+      color: white;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 20px;
+      font-size: 0.9rem;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Jesse & Co</h1>
+    <p>Your hub for updates, projects, and more</p>
+  </header>
+
+  <div class="container">
+
+    <div class="card">
+      <h2>Welcome 👋</h2>
+      <p>This is your official Jesse & Co site hosted on Netlify.</p>
+    </div>
+
+    <div class="card">
+      <h2>“I’m Coming Through” Toggle</h2>
+      <p id="status">Status: OFF</p>
+      <button onclick="toggleStatus()">Toggle Status</button>
+    </div>
+
+    <div class="card">
+      <h2>Quick Links</h2>
+      <p>Add your projects, Roblox links, or YouTube here.</p>
+    </div>
+
+  </div>
+
+  <footer>
+    © 2026 Jesse & Co
+  </footer>
+
+  <script>
+    let on = false;
+
+    function toggleStatus() {
+      on = !on;
+      document.getElementById("status").innerText =
+        "Status: " + (on ? "ON 🔥" : "OFF");
+    }
+  </script>
+
+</body>
+</html>
